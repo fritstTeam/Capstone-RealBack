@@ -42,6 +42,13 @@ public class User {
   @OneToMany(mappedBy = "userIdx", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Route> routes = new ArrayList<>();
 
+  // Board 관련
+  @OneToMany(mappedBy = "userIdx", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Board> boards = new ArrayList<>();
+
+  // Comment 관련
+  @OneToMany(mappedBy = "userIdx", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Comment> comments = new ArrayList<>();
 
   protected User() {}
 }
