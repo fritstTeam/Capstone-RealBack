@@ -21,8 +21,8 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t my-dockerhub-username/my-app:latest .
-          docker push my-dockerhub-username/my-app:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.6
@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull my-dockerhub-username/my-app:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest
             docker stop my-container || true
             docker rm my-container || true
-            docker run -d -p 8080:8080 --name my-container my-dockerhub-username/my-app:latest
+            docker run -d -p 8080:8080 --name my-container ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest
