@@ -5,7 +5,7 @@ spring:
     # local DB or Server DB (Container IP)
     url: jdbc:mysql://127.0.0.1:3306/capstone
     username: root
-    password: 엄준식
+    password: zxzxzx11
 
   #jpa 설정
   jpa:
@@ -16,5 +16,15 @@ spring:
       hibernate:
         format_sql: true
 
+
   application:
     name: maple
+
+springdoc:
+  api-docs:
+    path:
+      /api/v1 # 요청에 붙여서 보낼 접두사 설정
+
+  swagger-ui:
+    path:  # API 명세서 접근 경로에 대한 별칭 swagger-ui/index.html로 리다이렉션 됨.
+      /api
