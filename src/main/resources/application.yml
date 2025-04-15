@@ -5,7 +5,7 @@ spring:
     # local DB or Server DB (Container IP)
     url: jdbc:mysql://127.0.0.1:3306/capstone
     username: root
-    password: zxzxzx11
+    password: 1234
 
   #jpa 설정
   jpa:
