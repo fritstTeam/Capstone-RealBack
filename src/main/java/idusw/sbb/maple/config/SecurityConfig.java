@@ -18,7 +18,7 @@ public class SecurityConfig {
         .httpBasic(httpBasic -> httpBasic.disable()) // 브라우저 팝업 로그인 끔
         .authorizeHttpRequests(auth -> auth
             .anyRequest().permitAll()  // 모든 요청 허용
-        );
+        ).cors(c-> c.configurationSource(new CorsConfig()));
 
     return http.build();
   }
