@@ -1,25 +1,26 @@
 services:
   back:
-    image: capstone1234z/capstone:latest
+    image: capstone1234z/capstone-secret:tagname
     ports:
       - "80:8080"
     depends_on:
-          - mysql
+      - mysql
     volumes:
       - ./application.yml:/config/application.yml
+    command: ["java", "-jar", "app.jar", "--spring.config.location=file:/config/application.yml"]
 
   mysql:
     image: mysql:8.0
-
+    
     environment:
       MYSQL_ROOT_PASSWORD: 엄준식
 
-      MYSQL_DATABASE: cap
+      MYSQL_DATABASE: capstone
       MYSQL_USER: 엄준식
       MYSQL_PASSWORD: 엄준식
 
     ports:
-      - "3306:3306"
+      - 3306:3306
 
     # 좌 로컬 / 우 container
     volumes:

@@ -6,5 +6,5 @@ RUN gradle bootJar -x test --no-daemon
 FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.config.location=file:/config/application.yml"]
-
+ENTRYPOINT ["java", "-jar", "app.jar",
+"--spring.config.location=file:/config/application.yml"]
