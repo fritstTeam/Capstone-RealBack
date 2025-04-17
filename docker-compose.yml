@@ -3,25 +3,25 @@ services:
     image: capstone1234z/capstone-secret:tagname
     ports:
       - "80:8080"
-    depends_on:
-      - mysql
     volumes:
       - ./application.yml:/config/application.yml
     command: ["java", "-jar", "app.jar", "--spring.config.location=file:/config/application.yml"]
 
-  mysql:
-    image: mysql:8.0
-    
-    environment:
-      MYSQL_ROOT_PASSWORD: 엄준식
+  # EC2 인스턴스 내부에서 Spring-Boot 컨테이너, MySql 컨테이너 + github action Runner 까지 돌리니까
+  # 서버가 버티질 못해서 그냥 DB는 AWS RDS로 뺐음.
+  #  mysql:
+  #   image: mysql:8.0
 
-      MYSQL_DATABASE: capstone
-      MYSQL_USER: 엄준식
-      MYSQL_PASSWORD: 엄준식
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 엄준식
 
-    ports:
-      - 3306:3306
+  #     MYSQL_DATABASE: 엄준식
+  #     MYSQL_USER: 엄준식
+  #     MYSQL_PASSWORD: 엄준식
 
-    # 좌 로컬 / 우 container
-    volumes:
-      - ./mysql-data:/var/lib/mysql
+  #   ports:
+  #     - 3306:3306
+
+  #   # 좌 로컬 / 우 container
+  #   volumes:
+  #     - ./mysql-data:/var/lib/mysql
