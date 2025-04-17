@@ -22,7 +22,7 @@ jobs:
 
       - name: Build Docker Image And Push Image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret:tagnmae .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret:tagname .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret:tagname
 
   deploy:
