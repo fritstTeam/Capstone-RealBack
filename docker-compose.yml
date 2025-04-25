@@ -1,11 +1,36 @@
 services:
-  back:
+  spring:
     image: capstone1234z/capstone-secret:tagname
-    ports:
-      - "80:8080"
+    expose:
+      - 8080
     volumes:
       - ./application.yml:/config/application.yml
     command: ["java", "-jar", "app.jar", "--spring.config.location=file:/config/application.yml"]
+
+
+  nginx:
+    image: nginx:stable
+    depends_on:
+      - spring
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+  #      - ./nginx/conf.d:/etc/nginx/conf.d 모듈화 까지는 안할거니까 주석화
+
+  certbot:
+    depends_on:
+      - nginx
+    image: certbot/certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
+    # 실제 서비스용 인증 발급
+    entrypoint: "/bin/sh -c 'trap exit TERM; if [ ! -e /etc/letsencrypt/live/엄준식.shop/fullchain.pem ]; then certbot certonly --webroot --webroot-path=/var/www/certbot -d 엄준식.shop --email jo1814@naver.com --agree-tos --no-eff-email; fi; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
   # EC2 인스턴스 내부에서 Spring-Boot 컨테이너, MySql 컨테이너 + github action Runner 까지 돌리니까
   # 서버가 버티질 못해서 그냥 DB는 AWS RDS로 뺐음.
