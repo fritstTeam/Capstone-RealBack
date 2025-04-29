@@ -1,8 +1,7 @@
 package idusw.sbb.maple.service;
-import idusw.sbb.maple.domain.UserDetail;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
