@@ -1,8 +1,10 @@
 package idusw.sbb.maple.service;
 
 import idusw.sbb.maple.common.dto.PaginationRequest;
+import idusw.sbb.maple.common.dto.PaginationResponse;
 import idusw.sbb.maple.common.mapper.PaginationMapper;
 import idusw.sbb.maple.controller.dto.route.CreateRouteRequest;
+import idusw.sbb.maple.controller.dto.route.RouteResponse;
 import idusw.sbb.maple.domain.Category;
 import idusw.sbb.maple.domain.Route;
 import idusw.sbb.maple.domain.User;
@@ -10,7 +12,7 @@ import idusw.sbb.maple.mapper.RouteMapper;
 import idusw.sbb.maple.repository.CategoryRepository;
 import idusw.sbb.maple.repository.RouteRepository;
 import idusw.sbb.maple.repository.UserRepository;
-import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +40,17 @@ public class RouteService {
     return routeRepository.save(RouteMapper.toPersistence(user, category, route));
   }
 
-  public List<Route> getRoutes(PaginationRequest req) {
+  public PaginationResponse<RouteResponse> getRoutes(PaginationRequest req) {
 
     Pageable pageable = PaginationMapper.toPageable(req, "createdAt");
+    Page<Route> page = routeRepository.findAll(pageable);
 
-    return routeRepository.findAll(pageable).getContent();
+    return PaginationResponse.of(
+        page.getNumber() + 1,
+        page.getSize(),
+        page.getTotalElements(),
+        page.getContent().stream().map(RouteMapper::toResponse).toList()
+    );
   }
 
 }
