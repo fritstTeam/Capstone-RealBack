@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +49,13 @@ public class RouteController {
       @ParameterObject PaginationRequest query
   ) {
     return routeService.getRoutes(name, categoryIdx, query);
+  }
+
+  @GetMapping(ApiPaths.ROUTES + "{routeIdx}")
+  @Operation(summary = "Get Route By Id", description = "경로 Id로 경로 조회")
+  public RouteResponse getRouteByIdx(@PathVariable("routeIdx") Long routeIdx) {
+
+    return RouteMapper.toResponse(routeService.getRouteByIdx(routeIdx));
   }
 
 

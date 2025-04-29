@@ -65,4 +65,11 @@ public class RouteService {
     );
   }
 
+  public Route getRouteByIdx(Long routeIdx) {
+
+    Route route = routeRepository.findById(routeIdx)
+        .orElseThrow(() -> new RuntimeException("Category not found"));
+
+    return route;
+  }
 }
