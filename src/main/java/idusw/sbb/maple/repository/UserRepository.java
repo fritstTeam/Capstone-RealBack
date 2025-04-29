@@ -1,5 +1,8 @@
 package idusw.sbb.maple.repository;
 
-public class UserRepository {
+import idusw.sbb.maple.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
 
 }
