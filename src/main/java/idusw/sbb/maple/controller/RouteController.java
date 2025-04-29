@@ -8,12 +8,14 @@ import idusw.sbb.maple.controller.dto.route.RouteResponse;
 import idusw.sbb.maple.mapper.RouteMapper;
 import idusw.sbb.maple.service.RouteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -41,10 +43,11 @@ public class RouteController {
   @GetMapping(ApiPaths.GET_ROUTES)
   @Operation(summary = "Get Routes", description = "경로 조회")
   public PaginationResponse<RouteResponse> getRoutes(
+      @RequestParam(required = false) @Schema(description = "검색할 이름") String name,
+      @RequestParam(required = false) @Schema(description = "검색할 카테고리 번호") Long categoryIdx,
       @ParameterObject PaginationRequest query
   ) {
-
-    return routeService.getRoutes(query);
+    return routeService.getRoutes(name, categoryIdx, query);
   }
 
 

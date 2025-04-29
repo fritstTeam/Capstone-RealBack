@@ -40,10 +40,22 @@ public class RouteService {
     return routeRepository.save(RouteMapper.toPersistence(user, category, route));
   }
 
-  public PaginationResponse<RouteResponse> getRoutes(PaginationRequest req) {
+  public PaginationResponse<RouteResponse> getRoutes(String name, Long categoryIdx,
+      PaginationRequest req) {
 
     Pageable pageable = PaginationMapper.toPageable(req, "createdAt");
-    Page<Route> page = routeRepository.findAll(pageable);
+    Page<Route> page;
+
+    if (name == null && categoryIdx == null) {
+      page = routeRepository.findAll(pageable);
+    } else if (name != null && categoryIdx == null) {
+      page = routeRepository.findByNameContaining(name, pageable);
+    } else if (name == null) {
+      page = routeRepository.findByCategoryIdx_CategoryIdx(categoryIdx, pageable);
+    } else {
+      page = routeRepository.findByNameContainingAndCategoryIdx_CategoryIdx(name, categoryIdx,
+          pageable);
+    }
 
     return PaginationResponse.of(
         page.getNumber() + 1,
