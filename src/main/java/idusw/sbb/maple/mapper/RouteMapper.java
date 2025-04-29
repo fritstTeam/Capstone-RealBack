@@ -1,7 +1,7 @@
 package idusw.sbb.maple.mapper;
 
 import idusw.sbb.maple.controller.dto.route.CreateRouteRequest;
-import idusw.sbb.maple.controller.dto.route.CreateRouteResponse;
+import idusw.sbb.maple.controller.dto.route.RouteResponse;
 import idusw.sbb.maple.domain.Category;
 import idusw.sbb.maple.domain.Route;
 import idusw.sbb.maple.domain.User;
@@ -24,7 +24,7 @@ public class RouteMapper {
     return new Route(user, category, name, information, description, createdAt, null);
   }
 
-  public static CreateRouteResponse toResponse(Route route) {
+  public static RouteResponse toResponse(Route route) {
 
     Long routeIdx = route.getRouteIdx();
     Long userIdx = route.getUserIdx().getUserIdx();
@@ -35,9 +35,10 @@ public class RouteMapper {
     LocalDateTime createdAt = route.getCreatedAt();
     LocalDateTime updatedAt = route.getUpdatedAt();
 
-    return new CreateRouteResponse(routeIdx, userIdx, categoryIdx,
+    return new RouteResponse(routeIdx, userIdx, categoryIdx,
         name, information, description, createdAt, updatedAt);
   }
+
 
   // 이곳의 validation은 나중에 RequestDTO에서 할 수 있도록 옮길것.
   private static LineString toLineString(Double[][] coordinates) {
@@ -72,5 +73,6 @@ public class RouteMapper {
 
     return coordinates;
   }
+
 
 }
