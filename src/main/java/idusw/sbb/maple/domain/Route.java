@@ -10,15 +10,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.locationtech.jts.geom.LineString;
 
 @Entity
 @Table(name = "route")
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
 public class Route {
-  
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "route_idx")
@@ -35,10 +38,8 @@ public class Route {
   @Column(name = "name", nullable = false, columnDefinition = "VARCHAR(100)")
   private String name;
 
-  // 공간 정보는 LineString으로, 보통 Spatial 타입 사용 (MySQL 기준: geometry or line  string)
-  // 이건 추후 조금 손볼 필요가 있을듯. 타입은 따로 Class로 만들든 해야할듯
   @Column(name = "information", nullable = false, columnDefinition = "LineString")
-  private String information;
+  private LineString information;
 
   @Column(name = "description", nullable = false, columnDefinition = "VARCHAR(500)")
   private String description;
@@ -47,9 +48,19 @@ public class Route {
   @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME")
   private LocalDateTime createdAt;
 
-  @UpdateTimestamp
   @Column(name = "updated_at", columnDefinition = "DATETIME")
   private LocalDateTime updatedAt;
 
-  protected Route() {}
+  public Route(User userIdx, Category categoryIdx, String name, LineString information,
+      String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this.userIdx = userIdx;
+    this.categoryIdx = categoryIdx;
+    this.name = name;
+    this.information = information;
+    this.description = description;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+  }
+
+
 }
