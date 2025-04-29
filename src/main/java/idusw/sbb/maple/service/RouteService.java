@@ -68,6 +68,13 @@ public class RouteService {
   public Route getRouteByIdx(Long routeIdx) {
 
     return routeRepository.findById(routeIdx)
-        .orElseThrow(() -> new RuntimeException("Category not found"));
+        .orElseThrow(() -> new RuntimeException("Route not found"));
+  }
+
+  public void deleteRouteByIdx(Long routeIdx) {
+    routeRepository.findById(routeIdx)
+        .orElseThrow(() -> new RuntimeException("Route not found"));
+
+    routeRepository.deleteById(routeIdx);
   }
 }

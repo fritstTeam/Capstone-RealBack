@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,12 +53,20 @@ public class RouteController {
     return routeService.getRoutes(name, categoryIdx, query);
   }
 
-  @GetMapping(ApiPaths.ROUTES + "{routeIdx}")
+  @GetMapping(ApiPaths.ROUTES + "/{routeIdx}")
   @Operation(summary = "Get Route By Id", description = "경로 Id로 경로 조회")
   public RouteResponse getRouteByIdx(@PathVariable("routeIdx") Long routeIdx) {
 
     return RouteMapper.toResponse(routeService.getRouteByIdx(routeIdx));
   }
 
+  @DeleteMapping(ApiPaths.ROUTES + "/{routeIdx}")
+  @Operation(summary = "Delete Route By Id", description = "경로 Id로 경로 삭제")
+  public ResponseEntity<Void> deleteRouteByIdx(@PathVariable("routeIdx") Long routeIdx) {
+
+    routeService.deleteRouteByIdx(routeIdx);
+
+    return ResponseEntity.noContent().build();
+  }
 
 }
