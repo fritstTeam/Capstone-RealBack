@@ -29,7 +29,7 @@ public class RouteController {
     this.routeService = routeService;
   }
 
-  @PostMapping(ApiPaths.CREATE_ROUTE)
+  @PostMapping(ApiPaths.ROUTES)
   @Operation(summary = "Create Route", description = "경로 생성")
   public RouteResponse createRoute(
       @RequestBody @Valid CreateRouteRequest req
@@ -40,7 +40,7 @@ public class RouteController {
     return RouteMapper.toResponse(routeService.createRoute(userIdx, req));
   }
 
-  @GetMapping(ApiPaths.GET_ROUTES)
+  @GetMapping(ApiPaths.ROUTES)
   @Operation(summary = "Get Routes", description = "경로 조회")
   public PaginationResponse<RouteResponse> getRoutes(
       @RequestParam(required = false) @Schema(description = "검색할 이름") String name,
