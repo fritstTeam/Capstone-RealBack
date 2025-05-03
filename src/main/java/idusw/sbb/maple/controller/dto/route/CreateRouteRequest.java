@@ -1,9 +1,11 @@
 package idusw.sbb.maple.controller.dto.route;
 
+import idusw.sbb.maple.validator.ValidCoordinates;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,12 +24,12 @@ public class CreateRouteRequest {
   @Schema(description = "경로 이름", example = "내가 좋아하는 경로 A")
   private String name;
 
-  @NotBlank
+  @ValidCoordinates(message = "Coordinates Are Not Valid. Please Check Again.")
   @Schema(
       description = "경로 정보 - LineString WKT 형식",
       example = "[[127.01, 37.5], [127.02, 37.51]]"
   )
-  private Double[][] information; // 문자열로 받되 내부에서 LineString으로 파싱
+  private List<List<Double>> information;
 
   @Size(max = 500)
   @NotBlank
