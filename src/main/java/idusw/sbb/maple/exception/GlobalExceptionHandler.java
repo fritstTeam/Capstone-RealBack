@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
 
   // 사용자 정의 예외
   @ExceptionHandler(HttpException.class)
-  public ResponseEntity<ErrorResponse> handleNotFound(HttpException ex) {
+  public ResponseEntity<ErrorResponse> handleCustomException(HttpException ex) {
     int statusCode = ex.getStatusCode().value();
 
     ErrorResponse response = new ErrorResponse(
