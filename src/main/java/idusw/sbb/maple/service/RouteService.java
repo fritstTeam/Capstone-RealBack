@@ -8,12 +8,14 @@ import idusw.sbb.maple.controller.dto.route.RouteResponse;
 import idusw.sbb.maple.domain.Category;
 import idusw.sbb.maple.domain.Route;
 import idusw.sbb.maple.domain.User;
+import idusw.sbb.maple.exception.HttpException;
 import idusw.sbb.maple.mapper.RouteMapper;
 import idusw.sbb.maple.repository.CategoryRepository;
 import idusw.sbb.maple.repository.RouteRepository;
 import idusw.sbb.maple.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,10 +34,10 @@ public class RouteService {
 
   public Route createRoute(Long userIdx, CreateRouteRequest route) {
     User user = userRepository.findById(userIdx)
-        .orElseThrow(() -> new RuntimeException("User not found"));
+        .orElseThrow(() -> new HttpException("User not found", HttpStatus.NOT_FOUND));
 
     Category category = categoryRepository.findById(route.getCategoryIdx())
-        .orElseThrow(() -> new RuntimeException("Category not found"));
+        .orElseThrow(() -> new HttpException("Category not found", HttpStatus.NOT_FOUND));
 
     return routeRepository.save(RouteMapper.toPersistence(user, category, route));
   }
@@ -68,12 +70,12 @@ public class RouteService {
   public Route getRouteByIdx(Long routeIdx) {
 
     return routeRepository.findById(routeIdx)
-        .orElseThrow(() -> new RuntimeException("Route not found"));
+        .orElseThrow(() -> new HttpException("Route not found", HttpStatus.NOT_FOUND));
   }
 
   public void deleteRouteByIdx(Long routeIdx) {
     routeRepository.findById(routeIdx)
-        .orElseThrow(() -> new RuntimeException("Route not found"));
+        .orElseThrow(() -> new HttpException("Route not found.", HttpStatus.NOT_FOUND));
 
     routeRepository.deleteById(routeIdx);
   }
