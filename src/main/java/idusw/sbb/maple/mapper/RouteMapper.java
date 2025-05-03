@@ -6,6 +6,7 @@ import idusw.sbb.maple.domain.Category;
 import idusw.sbb.maple.domain.Route;
 import idusw.sbb.maple.domain.User;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -40,20 +41,12 @@ public class RouteMapper {
   }
 
 
-  // 이곳의 validation은 나중에 RequestDTO에서 할 수 있도록 옮길것.
-  private static LineString toLineString(Double[][] coordinates) {
-    if (coordinates == null || coordinates.length == 0) {
-      throw new IllegalArgumentException("좌표가 비어있습니다.");
-    }
+  private static LineString toLineString(List<List<Double>> coordinates) {
+    Coordinate[] coords = new Coordinate[coordinates.size()];
 
-    Coordinate[] coords = new Coordinate[coordinates.length];
-
-    for (int i = 0; i < coordinates.length; i++) {
-      Double[] point = coordinates[i];
-      if (point.length != 2) {
-        throw new IllegalArgumentException("각 좌표는 [x, y] 쌍이어야 합니다.");
-      }
-      coords[i] = new Coordinate(point[0], point[1]);
+    for (int i = 0; i < coordinates.size(); i++) {
+      List<Double> point = coordinates.get(i);
+      coords[i] = new Coordinate(point.get(0), point.get(1));
     }
 
     return geometryFactory.createLineString(coords);
