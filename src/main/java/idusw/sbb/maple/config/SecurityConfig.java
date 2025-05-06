@@ -18,11 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-  @Autowired
-  private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-  @Autowired
-  private JwtService jwtService;
 
   // 모든 요청 허용을 위해서 sequrity 기능을 일부 제한했는데 필요하면 고치면 될듯합니다.
   @Bean
@@ -34,9 +30,12 @@ public class SecurityConfig {
                 .usernameParameter("id")
                 .passwordParameter("pwd")
                 .successHandler((request, response, authentication) -> {
+                    UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+                    String nickname = userDetail.getNickname(); // 닉네임 추출
                     response.setStatus(HttpServletResponse.SC_OK);
                     response.setContentType("text/plain;charset=UTF-8");
                     response.getWriter().write("로그인 성공");
+                    response.getWriter().write(nickname);
                 })
                 .failureHandler((request, response, exception) -> {
                   response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

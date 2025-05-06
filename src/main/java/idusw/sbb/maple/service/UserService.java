@@ -37,7 +37,9 @@ public class UserService implements UserDetailsService {
     }
 
     public <T> void userSave(Map userData){ // 회원가입 or 회원수정
-        User user = null;
+
+        // User user = null;
+        User user = new User();
         user.setUserId(userData.get("userId").toString());
         user.setUserPassword(passwordEncoder.encode(userData.get("userPassword").toString()));
         user.setNickname(userData.get("name").toString());

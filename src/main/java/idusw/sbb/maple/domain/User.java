@@ -28,7 +28,7 @@ public class User {
   @Column(name = "user_id", nullable = false, columnDefinition = "VARCHAR(20)")
   private String userId;
 
-  @Column(name = "user_password", nullable = false, columnDefinition = "VARCHAR(30)")
+  @Column(name = "user_password", nullable = false, columnDefinition = "VARCHAR(100)")
   private String userPassword;
 
   @Column(name = "nickname", nullable = false, columnDefinition = "VARCHAR(50)")
@@ -50,5 +50,6 @@ public class User {
   @OneToMany(mappedBy = "userIdx", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments = new ArrayList<>();
 
-  protected User() {}
+  // protected를 public 으로 수정
+  public User() {}
 }
