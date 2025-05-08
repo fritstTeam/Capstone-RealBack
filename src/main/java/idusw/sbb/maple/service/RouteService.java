@@ -46,18 +46,7 @@ public class RouteService {
       PaginationRequest req) {
 
     Pageable pageable = PaginationMapper.toPageable(req, "createdAt");
-    Page<Route> page;
-
-    if (name == null && categoryIdx == null) {
-      page = routeRepository.findAll(pageable);
-    } else if (name != null && categoryIdx == null) {
-      page = routeRepository.findByNameContaining(name, pageable);
-    } else if (name == null) {
-      page = routeRepository.findByCategoryIdx_CategoryIdx(categoryIdx, pageable);
-    } else {
-      page = routeRepository.findByNameContainingAndCategoryIdx_CategoryIdx(name, categoryIdx,
-          pageable);
-    }
+    Page<Route> page = getRoutePage(name, categoryIdx, pageable);
 
     return PaginationResponse.of(
         page.getNumber() + 1,
@@ -65,6 +54,19 @@ public class RouteService {
         page.getTotalElements(),
         page.getContent().stream().map(RouteMapper::toResponse).toList()
     );
+  }
+
+  private Page<Route> getRoutePage(String name, Long categoryIdx, Pageable pageable) {
+    if (name == null && categoryIdx == null) {
+      return routeRepository.findAll(pageable);
+    } else if (name != null && categoryIdx == null) {
+      return routeRepository.findByNameContaining(name, pageable);
+    } else if (name == null) {
+      return routeRepository.findByCategoryIdx_CategoryIdx(categoryIdx, pageable);
+    } else {
+      return routeRepository.findByNameContainingAndCategoryIdx_CategoryIdx(name, categoryIdx,
+          pageable);
+    }
   }
 
   public Route getRouteByIdx(Long routeIdx) {

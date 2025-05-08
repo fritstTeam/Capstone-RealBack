@@ -66,6 +66,4 @@ public class RouteMapper {
 
     return coordinates;
   }
-
-
 }

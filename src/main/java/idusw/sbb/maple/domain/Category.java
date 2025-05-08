@@ -11,23 +11,28 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "category")
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
 public class Category {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name="category_idx")
+  @Column(name = "category_idx")
   private Long categoryIdx;
 
-  @Column(name= "name", nullable = false, columnDefinition = "VARCHAR(100)")
+  @Column(name = "name", nullable = false, columnDefinition = "VARCHAR(100)")
   private String name;
 
   @OneToMany(mappedBy = "categoryIdx", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Route> routes = new ArrayList<>();
 
-  protected Category() {}
+  public Category(String name) {
+    this.name = name;
+  }
 }
