@@ -10,7 +10,7 @@ import lombok.Getter;
 @Schema(description = "Route 생성 Response DTO")
 public class RouteResponse {
 
-  @Schema(description = "카테고리 고유 ID", example = "3")
+  @Schema(description = "경로 고유 ID", example = "3")
   private Long routeIdx;
 
   @Schema(description = "유저 고유 ID", example = "1")
