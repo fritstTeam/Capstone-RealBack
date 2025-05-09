@@ -1,5 +1,6 @@
 package idusw.sbb.maple.domain;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Getter // 유저 닉네임을 가져오기 위해 추가
 public class UserDetail implements UserDetails {
 
     private Long userIdx;

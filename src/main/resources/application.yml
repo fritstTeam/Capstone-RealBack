@@ -1,11 +1,14 @@
+server:
+  port: 8081
+
 spring:
   # MySQL 연동
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # local DB or Server DB (Container IP)
-    url: jdbc:mysql://127.0.0.1:3306/capstone
+    url: jdbc:mysql://127.0.0.1:3307/capstone
     username: root
-    password: 1234
+    password: cometrue
 
   #jpa 설정
   jpa:
