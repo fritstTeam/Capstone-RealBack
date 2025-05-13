@@ -18,7 +18,7 @@ public class CategoryController {
   }
 
   @GetMapping(ApiPaths.CATEGORIES)
-  @Operation(summary = "Read Category", description = "카테고리 조회")
+  @Operation(summary = "Get Categories", description = "카테고리 조회")
   public List<CategoryResponse> getCategories() {
     return categoryService.getAllCategories();
   }
