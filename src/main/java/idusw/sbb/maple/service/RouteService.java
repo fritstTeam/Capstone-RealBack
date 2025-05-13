@@ -75,9 +75,16 @@ public class RouteService {
         .orElseThrow(() -> new HttpException("Route not found", HttpStatus.NOT_FOUND));
   }
 
-  public void deleteRouteByIdx(Long routeIdx) {
-    routeRepository.findById(routeIdx)
+  public void deleteRouteByIdx(Long userIdx, Long routeIdx) {
+    userRepository.findById(userIdx)
+        .orElseThrow(() -> new HttpException("User not found.", HttpStatus.NOT_FOUND));
+
+    Route route = routeRepository.findById(routeIdx)
         .orElseThrow(() -> new HttpException("Route not found.", HttpStatus.NOT_FOUND));
+
+    if (!userIdx.equals(route.getUserIdx().getUserIdx())) {
+      throw new HttpException("You are not allowed to delete this route.", HttpStatus.FORBIDDEN);
+    }
 
     routeRepository.deleteById(routeIdx);
   }

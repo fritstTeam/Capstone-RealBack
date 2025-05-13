@@ -64,8 +64,9 @@ public class RouteController {
   @DeleteMapping(ApiPaths.ROUTES + "/{routeIdx}")
   @Operation(summary = "Delete Route By Id", description = "경로 Id로 경로 삭제")
   public ResponseEntity<Void> deleteRouteByIdx(@PathVariable("routeIdx") Long routeIdx) {
+    Long userIdx = 1L; // 유저 구현 전까지는 임의의 유저를 넣었음.
 
-    routeService.deleteRouteByIdx(routeIdx);
+    routeService.deleteRouteByIdx(userIdx, routeIdx);
 
     return ResponseEntity.noContent().build();
   }
