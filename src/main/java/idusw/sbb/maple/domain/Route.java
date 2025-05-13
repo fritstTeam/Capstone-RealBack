@@ -44,6 +44,9 @@ public class Route {
   @Column(name = "description", nullable = false, columnDefinition = "VARCHAR(500)")
   private String description;
 
+  @Column(name = "distance", nullable = false, columnDefinition = "DOUBLE")
+  private Double distance;
+
   @CreationTimestamp
   @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME")
   private LocalDateTime createdAt;
@@ -52,12 +55,13 @@ public class Route {
   private LocalDateTime updatedAt;
 
   public Route(User userIdx, Category categoryIdx, String name, LineString information,
-      String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
+      String description, Double distance, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.userIdx = userIdx;
     this.categoryIdx = categoryIdx;
     this.name = name;
     this.information = information;
     this.description = description;
+    this.distance = distance;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

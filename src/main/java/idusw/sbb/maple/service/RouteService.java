@@ -4,7 +4,7 @@ import idusw.sbb.maple.common.dto.PaginationRequest;
 import idusw.sbb.maple.common.dto.PaginationResponse;
 import idusw.sbb.maple.common.mapper.PaginationMapper;
 import idusw.sbb.maple.controller.dto.route.CreateRouteRequest;
-import idusw.sbb.maple.controller.dto.route.RouteResponse;
+import idusw.sbb.maple.controller.dto.route.GetRoutesResponse;
 import idusw.sbb.maple.domain.Category;
 import idusw.sbb.maple.domain.Route;
 import idusw.sbb.maple.domain.User;
@@ -42,7 +42,7 @@ public class RouteService {
     return routeRepository.save(RouteMapper.toPersistence(user, category, route));
   }
 
-  public PaginationResponse<RouteResponse> getRoutes(String name, Long categoryIdx,
+  public PaginationResponse<GetRoutesResponse> getRoutes(String name, Long categoryIdx,
       PaginationRequest req) {
 
     Pageable pageable = PaginationMapper.toPageable(req, "createdAt");
@@ -52,7 +52,7 @@ public class RouteService {
         page.getNumber() + 1,
         page.getSize(),
         page.getTotalElements(),
-        page.getContent().stream().map(RouteMapper::toResponse).toList()
+        page.getContent().stream().map(RouteMapper::toGetRoutesResponse).toList()
     );
   }
 

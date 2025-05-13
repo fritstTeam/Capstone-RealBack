@@ -7,8 +7,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-@Schema(description = "Route 생성 Response DTO")
-public class RouteResponse {
+@Schema(description = "Route 다중 조회 Response DTO")
+public class GetRoutesResponse {
 
   @Schema(description = "경로 고유 ID", example = "3")
   private Long routeIdx;
@@ -18,6 +18,9 @@ public class RouteResponse {
 
   @Schema(description = "카테고리 고유 ID", example = "1")
   private Long categoryIdx;
+
+  @Schema(description = "카테고리 이름", example = "주유소")
+  private String categoryName;
 
   @Schema(description = "이름", example = "내가 좋아하는 경로 A")
   private String name;
@@ -52,4 +55,5 @@ public class RouteResponse {
       nullable = true
   )
   private LocalDateTime updatedAt;
+
 }

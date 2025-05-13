@@ -1,6 +1,7 @@
 package idusw.sbb.maple.mapper;
 
 import idusw.sbb.maple.controller.dto.route.CreateRouteRequest;
+import idusw.sbb.maple.controller.dto.route.GetRoutesResponse;
 import idusw.sbb.maple.controller.dto.route.RouteResponse;
 import idusw.sbb.maple.domain.Category;
 import idusw.sbb.maple.domain.Route;
@@ -20,9 +21,10 @@ public class RouteMapper {
     String name = route.getName();
     LineString information = toLineString(route.getInformation());
     String description = route.getDescription();
+    Double distance = route.getDistance();
     LocalDateTime createdAt = LocalDateTime.now();
 
-    return new Route(user, category, name, information, description, createdAt, null);
+    return new Route(user, category, name, information, description, distance, createdAt, null);
   }
 
   public static RouteResponse toResponse(Route route) {
@@ -33,11 +35,28 @@ public class RouteMapper {
     String name = route.getName();
     String description = route.getDescription();
     Double[][] information = toCoordinates(route.getInformation());
+    Double distance = route.getDistance();
     LocalDateTime createdAt = route.getCreatedAt();
     LocalDateTime updatedAt = route.getUpdatedAt();
 
     return new RouteResponse(routeIdx, userIdx, categoryIdx,
-        name, information, description, createdAt, updatedAt);
+        name, information, description, distance, createdAt, updatedAt);
+  }
+
+  public static GetRoutesResponse toGetRoutesResponse(Route route) {
+    Long routeIdx = route.getRouteIdx();
+    Long userIdx = route.getUserIdx().getUserIdx();
+    Long categoryIdx = route.getCategoryIdx().getCategoryIdx();
+    String categoryName = route.getCategoryIdx().getName();
+    String name = route.getName();
+    String description = route.getDescription();
+    Double[][] information = toCoordinates(route.getInformation());
+    Double distance = route.getDistance();
+    LocalDateTime createdAt = route.getCreatedAt();
+    LocalDateTime updatedAt = route.getUpdatedAt();
+
+    return new GetRoutesResponse(routeIdx, userIdx, categoryIdx, categoryName,
+        name, information, description, distance, createdAt, updatedAt);
   }
 
 
