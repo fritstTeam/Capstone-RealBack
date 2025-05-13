@@ -6,5 +6,6 @@ public class ApiPaths {
 
   public static final String ROUTES = "/routes";
   public static final String CATEGORIES = "/categories";
+  public static final String BOARDS = "/boards";
 
 }

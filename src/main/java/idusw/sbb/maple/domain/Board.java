@@ -14,13 +14,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "board")
-@Getter @Setter
 public class Board {
 
   @Id
@@ -31,10 +34,10 @@ public class Board {
   @JoinColumn(name = "user_idx", nullable = false)
   private User userIdx;
 
-  @Column(name="title", nullable = false, columnDefinition = "VARCHAR(100)")
+  @Column(name = "title", nullable = false, columnDefinition = "VARCHAR(100)")
   private String title;
 
-  @Column(name="content", nullable = false, columnDefinition = "VARCHAR(1000)")
+  @Column(name = "content", nullable = false, columnDefinition = "VARCHAR(1000)")
   private String content;
 
   @CreationTimestamp
@@ -49,5 +52,12 @@ public class Board {
   @OneToMany(mappedBy = "boardIdx", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments = new ArrayList<>();
 
-  protected Board() {}
+  public Board(User user, String title, String content, LocalDateTime createdAt,
+      LocalDateTime updatedAt) {
+    this.userIdx = user;
+    this.title = title;
+    this.content = content;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+  }
 }
