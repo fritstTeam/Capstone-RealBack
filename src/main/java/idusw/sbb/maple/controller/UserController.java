@@ -24,7 +24,10 @@ public class UserController {
 
     @GetMapping("/api/user")
     public ResponseEntity<?> getUserInfo(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
+
+    /*
+    어느 메서드에서든 UserIdx를 가져올 수 있도록 코드 수정
+    if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authenticated");
         }
 
@@ -34,6 +37,15 @@ public class UserController {
         }
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid principal");
+    */
+
+        Long condition = userService.getUserIdx(authentication);
+
+        if (condition == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authenticated");
+        }
+
+        return ResponseEntity.ok(condition);
     }
 
 

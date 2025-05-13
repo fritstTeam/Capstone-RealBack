@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   # MySQL 연동
@@ -8,7 +8,7 @@ spring:
     # local DB or Server DB (Container IP)
     url: jdbc:mysql://127.0.0.1:3306/capstone
     username: root
-    password: ktx408216
+    password: 1234
 
   #jpa 설정
   jpa:
