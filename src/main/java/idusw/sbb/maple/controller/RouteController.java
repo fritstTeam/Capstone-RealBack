@@ -4,6 +4,7 @@ import idusw.sbb.maple.common.ApiPaths;
 import idusw.sbb.maple.common.dto.PaginationRequest;
 import idusw.sbb.maple.common.dto.PaginationResponse;
 import idusw.sbb.maple.controller.dto.route.CreateRouteRequest;
+import idusw.sbb.maple.controller.dto.route.GetRoutesResponse;
 import idusw.sbb.maple.controller.dto.route.RouteResponse;
 import idusw.sbb.maple.mapper.RouteMapper;
 import idusw.sbb.maple.service.RouteService;
@@ -45,7 +46,7 @@ public class RouteController {
 
   @GetMapping(ApiPaths.ROUTES)
   @Operation(summary = "Get Routes", description = "경로 조회")
-  public PaginationResponse<RouteResponse> getRoutes(
+  public PaginationResponse<GetRoutesResponse> getRoutes(
       @RequestParam(required = false) @Schema(description = "검색할 이름") String name,
       @RequestParam(required = false) @Schema(description = "검색할 카테고리 번호") Long categoryIdx,
       @ParameterObject PaginationRequest query
