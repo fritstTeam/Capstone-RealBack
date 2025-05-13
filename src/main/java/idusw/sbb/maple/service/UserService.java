@@ -37,10 +37,12 @@ public class UserService implements UserDetailsService {
     }
 
     public <T> void userSave(Map userData){ // 회원가입 or 회원수정
-        User user = null;
+        User user = new User();
         user.setUserId(userData.get("userId").toString());
-        user.setUserPassword(passwordEncoder.encode(userData.get("userPassword").toString()));
+        user.setUserPassword(passwordEncoder.encode(userData.get("password").toString()));
         user.setNickname(userData.get("name").toString());
+
+        System.out.println("서비스user"+user);
 
         if (userRepository.existsByUserId(userData.get("userId").toString())) {
             throw new IllegalArgumentException("가입 정보를 확인해주세요.");

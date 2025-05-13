@@ -18,12 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-  @Autowired
-  private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-  @Autowired
-  private JwtService jwtService;
-
   // 모든 요청 허용을 위해서 sequrity 기능을 일부 제한했는데 필요하면 고치면 될듯합니다.
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -59,7 +53,6 @@ public class SecurityConfig {
 
     return http.build();
   }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

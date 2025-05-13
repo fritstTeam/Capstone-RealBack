@@ -1,15 +1,15 @@
 package idusw.sbb.maple.controller;
 
 import idusw.sbb.maple.domain.User;
+import idusw.sbb.maple.domain.UserDetail;
 import idusw.sbb.maple.repository.UserRepository;
 import idusw.sbb.maple.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -21,6 +21,21 @@ public class UserController {
     public UserController(UserService userService){
         this.userService = userService;
     }
+
+    @GetMapping("/api/user")
+    public ResponseEntity<?> getUserInfo(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authenticated");
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetail userDetail) {
+            return ResponseEntity.ok(userDetail.getUserIdx()); //사용자 객체
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid principal");
+    }
+
 
     @PostMapping("/check-id") //비밀번호 확인
     public ResponseEntity post(@RequestParam String userId) {
@@ -35,6 +50,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity post(@RequestBody Map userData){
+        System.out.println("컨트롤러에서"+userData);
         try {
             userService.userSave(userData);
             return ResponseEntity.ok("회원가입 성공");

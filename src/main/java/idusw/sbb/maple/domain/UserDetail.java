@@ -1,5 +1,6 @@
 package idusw.sbb.maple.domain;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class UserDetail implements UserDetails {
 
     private Long userIdx;
@@ -45,4 +47,6 @@ public class UserDetail implements UserDetails {
     public String getUsername() {
         return username;
     }
+
+
 }
