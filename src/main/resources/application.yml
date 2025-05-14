@@ -8,7 +8,7 @@ spring:
     # local DB or Server DB (Container IP)
     url: jdbc:mysql://127.0.0.1:3306/capstone
     username: root
-    password: 1234
+    password: 엄준식
 
   #jpa 설정
   jpa:
@@ -31,3 +31,10 @@ springdoc:
   swagger-ui:
     path:  # API 명세서 접근 경로에 대한 별칭 swagger-ui/index.html로 리다이렉션 됨.
       /api
+
+# 스웨거 요청 url 설정 환경변수 env에 따라서 어느곳으로 요청을 보낼건지 달라짐.
+# SwaggerConfig Class 참조
+swagger:
+  env: local # 또는 develop
+  local-url: http://localhost:8080/
+  develop-url: https://modern-world.shop/

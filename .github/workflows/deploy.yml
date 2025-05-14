@@ -3,11 +3,12 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - develop  # main 브랜치에 push될 때 실행
+      - develop
 
 jobs:
   build:
-    runs-on: self-hosted
+    name: Build Docker Image on GitHub Actions
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -19,19 +20,31 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker Image
+      - name: Build Docker Image And Push Image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret:latest .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret:tagname .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret:tagname
 
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret:latest || true
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret:latest
-            docker compose down
-            docker compose -f /home/ubuntu/docker-compose.yml up
+  deploy:
+      runs-on: self-hosted
+      needs: build
+
+      steps:
+        - name: Delete Old docker container
+          run: docker rm -f back || true
+
+        - name: Delete Old docker image
+          run: docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret || true
+
+        - name: Log in to Docker Hub
+          uses: docker/login-action@v2
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+        - name: Pull Docker image
+          run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/capstone-secret:tagname
+
+        - name: Run Docker Container
+          run:
+            docker compose -f /home/ubuntu/docker-compose.yml up -d
