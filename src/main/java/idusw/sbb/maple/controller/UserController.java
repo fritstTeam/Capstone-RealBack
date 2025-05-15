@@ -1,30 +1,38 @@
 package idusw.sbb.maple.controller;
 
-import idusw.sbb.maple.domain.User;
-import idusw.sbb.maple.domain.UserDetail;
-import idusw.sbb.maple.repository.UserRepository;
+import idusw.sbb.maple.common.ApiPaths;
+import idusw.sbb.maple.controller.dto.user.UserRequest;
+import idusw.sbb.maple.exception.HttpException;
 import idusw.sbb.maple.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
 
 @RestController
+@RequestMapping(ApiPaths.API_V1)
 public class UserController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    public UserController(UserService userService){
-        this.userService = userService;
-    }
+  public UserController(UserService userService) {
+    this.userService = userService;
+  }
 
-    @GetMapping("/api/user")
-    public ResponseEntity<?> getUserInfo(Authentication authentication) {
+  @GetMapping(ApiPaths.USERS)
+  @Operation(summary = "Create Route", description = "유저 조회", hidden = true) // hidden 처리
+  public ResponseEntity<?> getUserInfo(Authentication authentication) {
+    // 유저 조회 컨트롤러는 필요하지 않음에 따라서 주석처리
 
+    throw new HttpException("This is not available. (Don't use this)", HttpStatus.BAD_REQUEST);
     /*
     어느 메서드에서든 UserIdx를 가져올 수 있도록 코드 수정
     if (authentication == null || !authentication.isAuthenticated()) {
@@ -39,39 +47,27 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid principal");
     */
 
-        Long condition = userService.getUserIdx(authentication);
+/*    Long condition = userService.getUserIdx(authentication);
 
-        if (condition == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authenticated");
-        }
-
-        return ResponseEntity.ok(condition);
+    if (condition == null) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authenticated");
     }
 
-
-    @PostMapping("/check-id") //비밀번호 확인
-    public ResponseEntity post(@RequestParam String userId) {
-        if(!userService.existByUserId(userId)){
-            return ResponseEntity.ok("사용가능한 아이디");
-        } else {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body("이미 사용 중인 아이디입니다.");
-        }
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity post(@RequestBody Map userData){
-        System.out.println("컨트롤러에서"+userData);
-        try {
-            userService.userSave(userData);
-            return ResponseEntity.ok("회원가입 성공");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-
-    }
+    return ResponseEntity.ok(condition);*/
+  }
 
 
+  @PostMapping("/register")
+  @Operation(summary = "Create User", description = "회원 가입")
+  public ResponseEntity<Void> post(@Valid @RequestBody UserRequest user) {
+    userService.createUser(user);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/check-id") //아이디 확인
+  public ResponseEntity<Void> post(@RequestParam String userId) {
+    userService.existByUserId(userId);
+    return ResponseEntity.noContent().build();
+  }
 
 }
