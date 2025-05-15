@@ -1,5 +1,9 @@
 server:
   port: 8080
+  servlet:
+    session:
+      timeout:
+        30m  # 세션 유지 기간
 
 spring:
   # MySQL 연동
@@ -29,7 +33,7 @@ springdoc:
       /api/v1 # 요청에 붙여서 보낼 접두사 설정
 
   swagger-ui:
-    path:  # API 명세서 접근 경로에 대한 별칭 swagger-ui/index.html로 리다이렉션 됨.
+    path: # API 명세서 접근 경로에 대한 별칭 swagger-ui/index.html로 리다이렉션 됨.
       /api
 
 # 스웨거 요청 url 설정 환경변수 env에 따라서 어느곳으로 요청을 보낼건지 달라짐.
