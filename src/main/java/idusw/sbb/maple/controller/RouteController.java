@@ -6,13 +6,17 @@ import idusw.sbb.maple.common.dto.PaginationResponse;
 import idusw.sbb.maple.controller.dto.route.CreateRouteRequest;
 import idusw.sbb.maple.controller.dto.route.GetRoutesResponse;
 import idusw.sbb.maple.controller.dto.route.RouteResponse;
+import idusw.sbb.maple.domain.UserDetail;
+import idusw.sbb.maple.exception.HttpException;
 import idusw.sbb.maple.mapper.RouteMapper;
 import idusw.sbb.maple.service.RouteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,10 +40,16 @@ public class RouteController {
   @PostMapping(ApiPaths.ROUTES)
   @Operation(summary = "Create Route", description = "경로 생성")
   public RouteResponse createRoute(
+      @AuthenticationPrincipal UserDetail user,
       @RequestBody @Valid CreateRouteRequest req
   ) {
+    if (user == null) {
+      throw new HttpException("Authentification failed. Please Login First",
+          HttpStatus.UNAUTHORIZED);
+    }
+
     // 유저 구현 전까지는 Idx 직접 넣음
-    Long userIdx = 1L;
+    Long userIdx = user.getUserIdx();
 
     return RouteMapper.toResponse(routeService.createRoute(userIdx, req));
   }
@@ -63,8 +73,14 @@ public class RouteController {
 
   @DeleteMapping(ApiPaths.ROUTES + "/{routeIdx}")
   @Operation(summary = "Delete Route By Id", description = "경로 Id로 경로 삭제")
-  public ResponseEntity<Void> deleteRouteByIdx(@PathVariable("routeIdx") Long routeIdx) {
-    Long userIdx = 1L; // 유저 구현 전까지는 임의의 유저를 넣었음.
+  public ResponseEntity<Void> deleteRouteByIdx(@AuthenticationPrincipal UserDetail user,
+      @PathVariable("routeIdx") Long routeIdx) {
+    if (user == null) {
+      throw new HttpException("Authentification failed. Please Login First",
+          HttpStatus.UNAUTHORIZED);
+    }
+
+    Long userIdx = user.getUserIdx();
 
     routeService.deleteRouteByIdx(userIdx, routeIdx);
 
