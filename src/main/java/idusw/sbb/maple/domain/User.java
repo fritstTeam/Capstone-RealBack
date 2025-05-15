@@ -11,8 +11,6 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +18,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "user")
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
 
   @Id
@@ -53,5 +53,10 @@ public class User {
   @OneToMany(mappedBy = "userIdx", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments = new ArrayList<>();
 
-  public User() {}
+  public User(String userId, String userPassword, String nickname, LocalDateTime createdAt) {
+    this.userId = userId;
+    this.userPassword = userPassword;
+    this.nickname = nickname;
+    this.createdAt = createdAt;
+  }
 }
