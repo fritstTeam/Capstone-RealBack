@@ -12,12 +12,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "user")
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
 
   @Id
@@ -28,7 +31,7 @@ public class User {
   @Column(name = "user_id", nullable = false, columnDefinition = "VARCHAR(20)")
   private String userId;
 
-  @Column(name = "user_password", nullable = false, columnDefinition = "VARCHAR(30)")
+  @Column(name = "user_password", nullable = false, columnDefinition = "VARCHAR(100)")
   private String userPassword;
 
   @Column(name = "nickname", nullable = false, columnDefinition = "VARCHAR(50)")
@@ -50,5 +53,10 @@ public class User {
   @OneToMany(mappedBy = "userIdx", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments = new ArrayList<>();
 
-  protected User() {}
+  public User(String userId, String userPassword, String nickname, LocalDateTime createdAt) {
+    this.userId = userId;
+    this.userPassword = userPassword;
+    this.nickname = nickname;
+    this.createdAt = createdAt;
+  }
 }
