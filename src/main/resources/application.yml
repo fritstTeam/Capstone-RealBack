@@ -2,6 +2,8 @@ server:
   port: 8080
   servlet:
     session:
+      cookie:
+        secure: true  # 💡 Secure=true 되도록 설정
       timeout:
         30m  # 세션 유지 기간
 
