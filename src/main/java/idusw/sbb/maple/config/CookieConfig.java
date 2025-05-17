@@ -26,7 +26,7 @@ public class CookieConfig implements Filter {
 
       if (session != null) {
         // 커스텀 쿠키 헤더 수동 추가
-        response.addHeader("Set-Cookie", String.format(
+        response.setHeader("Set-Cookie", String.format(
             "JSESSIONID=%s; Path=/; Domain=.modern-world.shop; HttpOnly; Secure; SameSite=None",
             session.getId()
         ));
