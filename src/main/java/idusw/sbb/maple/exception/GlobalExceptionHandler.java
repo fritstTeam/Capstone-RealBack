@@ -70,6 +70,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleAll(Exception ex, HttpServletRequest request) {
+    ex.printStackTrace();
 
     ErrorResponse response = new ErrorResponse(
         HttpStatus.INTERNAL_SERVER_ERROR.value(),
