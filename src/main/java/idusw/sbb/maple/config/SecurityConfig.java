@@ -1,6 +1,7 @@
 package idusw.sbb.maple.config;
 
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,9 +20,9 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(AbstractHttpConfigurer::disable) // CSRF 끄기 (POST 요청 테스트 편하게)
-        .formLogin(AbstractHttpConfigurer::disable)
+        // .formLogin(AbstractHttpConfigurer::disable)
         .logout(AbstractHttpConfigurer::disable)
-        /* .formLogin(formLogin -> formLogin
+        .formLogin(formLogin -> formLogin
              .loginProcessingUrl("/login")
              .usernameParameter("id")
              .passwordParameter("pwd")
@@ -43,7 +44,7 @@ public class SecurityConfig {
              })
              .invalidateHttpSession(true)                 // 세션 무효화
              .deleteCookies("JSESSIONID")                 // 세션 쿠키 삭제
-         )*/
+         )
         .httpBasic(AbstractHttpConfigurer::disable) // 브라우저 팝업 로그인 끔
         .authorizeHttpRequests(auth -> auth
             .anyRequest().permitAll()  // 모든 요청 허용
