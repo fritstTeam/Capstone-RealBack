@@ -1,5 +1,6 @@
 package idusw.sbb.maple.controller.dto.user;
 
+import idusw.sbb.maple.validator.PasswordMatches;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,6 +13,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
+@PasswordMatches
 @Schema(description = "회원가입 Resquest DTO")
 public class UserRequest {
 
@@ -26,4 +28,7 @@ public class UserRequest {
   @Size(min = 5, max = 20, message = "비밀번호는 5자 이상 20자 이하로 입력하세요.")
   @Schema(minLength = 5, maxLength = 20)
   String userPassword;
+
+  @NotBlank(message = "비밀번호 확인은 필수입니다.")
+  String confirmPassword;
 }
